@@ -79,7 +79,7 @@
     <h1>🧪 חידון — השפה הכימית</h1>
     <p>15 שאלות • בחרו את הסיווג הנכון</p>
     <p>עריכה: מילכה ברקו גרש</p>
-    <button class="main-btn" onclick="startGame()">התחלה 🚀</button>
+    <button class="main-btn">התחלה 🚀</button>
 </div>
 
 <div class="card hidden" id="game">
@@ -92,93 +92,98 @@
 <div class="card hidden" id="end">
     <h1>🎉 סיימת!</h1>
     <p id="scoreText"></p>
-    <button class="main-btn" onclick="startGame()">שחק שוב 🔄</button>
+    <button class="main-btn">שחק שוב 🔄</button>
 </div>
 
 <script>
-/* הגדרת כל האלמנטים מראש */
-const start = document.getElementById("start");
-const game = document.getElementById("game");
-const end = document.getElementById("end");
-const img = document.getElementById("img");
-const counter = document.getElementById("counter");
-const options = document.getElementById("options");
-const scoreText = document.getElementById("scoreText");
+window.onload = function() {
+  const start = document.getElementById("start");
+  const game = document.getElementById("game");
+  const end = document.getElementById("end");
+  const img = document.getElementById("img");
+  const counter = document.getElementById("counter");
+  const options = document.getElementById("options");
+  const scoreText = document.getElementById("scoreText");
 
-const QUESTIONS = [
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/1%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/2%20תערובת%20של%20יסודות.png?raw=true",ans:"תערובת של יסודות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/3%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/4%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/5%20חומר%20טהור%20שהוא%20יסוד.png?raw=true",ans:"חומר טהור שהוא יסוד"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/6%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/7%20חומר%20טהור%20שהוא%20יסוד.png?raw=true",ans:"חומר טהור שהוא יסוד"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/8%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/9%20תערובת%20של%20יסודות.png?raw=true",ans:"תערובת של יסודות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/10%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/11%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/12%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/13%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/14%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
-  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/15%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"}
-];
+  const QUESTIONS = [
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/1%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/2%20תערובת%20של%20יסודות.png?raw=true",ans:"תערובת של יסודות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/3%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/4%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/5%20חומר%20טהור%20שהוא%20יסוד.png?raw=true",ans:"חומר טהור שהוא יסוד"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/6%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/7%20חומר%20טהור%20שהוא%20יסוד.png?raw=true",ans:"חומר טהור שהוא יסוד"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/8%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/9%20תערובת%20של%20יסודות.png?raw=true",ans:"תערובת של יסודות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/10%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/11%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/12%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/13%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/14%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+    {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/15%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"}
+  ];
 
-const OPTIONS = [
-  "חומר טהור שהוא יסוד",
-  "חומר טהור שהוא תרכובת",
-  "תערובת של יסודות",
-  "תערובת של תרכובות",
-  "תערובת של יסודות ותרכובות"
-];
+  const OPTIONS = [
+    "חומר טהור שהוא יסוד",
+    "חומר טהור שהוא תרכובת",
+    "תערובת של יסודות",
+    "תערובת של תרכובות",
+    "תערובת של יסודות ותרכובות"
+  ];
 
-let order, i, score;
+  let order, i, score;
 
-function shuffle(a){return a.sort(()=>Math.random()-0.5)}
+  function shuffle(a){return a.sort(()=>Math.random()-0.5)}
 
-function startGame(){
-  order = shuffle([...QUESTIONS]);
-  i = 0;
-  score = 0;
-  start.classList.add("hidden");
-  end.classList.add("hidden");
-  game.classList.remove("hidden");
-  showQ();
-}
+  function startGame(){
+    order = shuffle([...QUESTIONS]);
+    i = 0;
+    score = 0;
+    start.classList.add("hidden");
+    end.classList.add("hidden");
+    game.classList.remove("hidden");
+    showQ();
+  }
 
-function showQ(){
-  const q = order[i];
-  img.src = q.img;
-  counter.textContent = `שאלה ${i+1} מתוך ${order.length}`;
-  options.innerHTML = "";
-  const choices = shuffle([...OPTIONS]);
-  choices.forEach(c => {
-    const b = document.createElement("button");
-    b.className="option";
-    b.textContent=c;
-    b.onclick=()=>answer(c===q.ans,b);
-    options.appendChild(b);
-  });
-}
+  function showQ(){
+    const q = order[i];
+    img.src = q.img;
+    counter.textContent = `שאלה ${i+1} מתוך ${order.length}`;
+    options.innerHTML = "";
+    const choices = shuffle([...OPTIONS]);
+    choices.forEach(c => {
+      const b = document.createElement("button");
+      b.className="option";
+      b.textContent=c;
+      b.onclick=()=>answer(c===q.ans,b);
+      options.appendChild(b);
+    });
+  }
 
-function answer(isCorrect,btn){
-  document.querySelectorAll(".option").forEach(b=>{
-    b.disabled=true;
-    if(b===btn){
-      b.classList.add(isCorrect?"correct":"wrong");
-    } else b.classList.add("faded");
-  });
-  if(isCorrect) score++;
-  setTimeout(()=> {
-    i++;
-    i<order.length?showQ():finish();
-  },1200);
-}
+  function answer(isCorrect,btn){
+    document.querySelectorAll(".option").forEach(b=>{
+      b.disabled=true;
+      if(b===btn){
+        b.classList.add(isCorrect?"correct":"wrong");
+      } else b.classList.add("faded");
+    });
+    if(isCorrect) score++;
+    setTimeout(()=> {
+      i++;
+      i<order.length?showQ():finish();
+    },1200);
+  }
 
-function finish(){
-  game.classList.add("hidden");
-  end.classList.remove("hidden");
-  scoreText.textContent=`הציון שלך: ${score} מתוך ${order.length}`;
-}
+  function finish(){
+    game.classList.add("hidden");
+    end.classList.remove("hidden");
+    scoreText.textContent=`הציון שלך: ${score} מתוך ${order.length}`;
+  }
+
+  // מחברים את הכפתורים לפונקציה startGame
+  document.querySelector("#start .main-btn").onclick = startGame;
+  document.querySelector("#end .main-btn").onclick = startGame;
+};
 </script>
 
 </body>
