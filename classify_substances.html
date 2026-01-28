@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>חידון — השפה הכימית</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:Arial,sans-serif;background:#f7fafc;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.card{background:white;border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,0.2);max-width:650px;width:100%;padding:24px;text-align:center}
+.hidden{display:none}
+img{width:100%;height:300px;object-fit:cover;border-radius:14px;margin-bottom:16px}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+button.option{padding:16px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
+.correct{background:#bbf7d0}
+.wrong{background:#fecaca}
+.faded{opacity:.4}
+.main-btn{padding:18px;width:100%;font-size:20px;border:none;border-radius:16px;background:#16a34a;color:white;font-weight:bold;cursor:pointer;margin-top:16px}
+</style>
+</head>
+<body>
+
+<div class="card" id="start">
+    <h1>🧪 חידון — השפה הכימית</h1>
+    <p>15 שאלות • בחרי את הסיווג הנכון</p>
+    <p>עריכה: מילכה ברקו גרש</p>
+    <button class="main-btn" onclick="startGame()">התחלה 🚀</button>
+</div>
+
+<div class="card hidden" id="game">
+    <h3 id="counter"></h3>
+    <img id="img">
+    <p><strong>מה הסיווג הנכון?</strong></p>
+    <div class="options" id="options"></div>
+</div>
+
+<div class="card hidden" id="end">
+    <h1>🎉 סיימת!</h1>
+    <p id="scoreText"></p>
+    <button class="main-btn" onclick="startGame()">שחק שוב 🔄</button>
+</div>
+
+<script>
+const QUESTIONS = [
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/1%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/2%20תערובת%20של%20יסודות.png?raw=true",ans:"תערובת של יסודות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/3%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/4%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/5%20חומר%20טהור%20שהוא%20יסוד.png?raw=true",ans:"חומר טהור שהוא יסוד"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/6%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/7%20חומר%20טהור%20שהוא%20יסוד.png?raw=true",ans:"חומר טהור שהוא יסוד"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/8%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/9%20תערובת%20של%20יסודות.png?raw=true",ans:"תערובת של יסודות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/10%20תערובת%20של%20יסודות%20ותרכובות.png?raw=true",ans:"תערובת של יסודות ותרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/11%20חומר%20טהור%20שהוא%20תרכובת.png?raw=true",ans:"חומר טהור שהוא תרכובת"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/12%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/13%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/14%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"},
+  {img:"https://github.com/milkabcd-dot/hidon-zmahim/blob/main/15%20תערובת%20של%20תרכובות.png?raw=true",ans:"תערובת של תרכובות"}
+];
+
+const OPTIONS = [
+  "חומר טהור שהוא יסוד",
+  "חומר טהור שהוא תרכובת",
+  "תערובת של יסודות",
+  "תערובת של תרכובות",
+  "תערובת של יסודות ותרכובות"
+];
+
+let order, i, score;
+
+function shuffle(a){return a.sort(()=>Math.random()-0.5)}
+
+function startGame(){
+  order = shuffle([...QUESTIONS]);
+  i = 0;
+  score = 0;
+  start.classList.add("hidden");
+  end.classList.add("hidden");
+  game.classList.remove("hidden");
+  showQ();
+}
+
+function showQ(){
+  const q = order[i];
+  img.src = q.img;
+  counter.textContent = `שאלה ${i+1} מתוך ${order.length}`;
+  options.innerHTML = "";
+  const choices = shuffle([...OPTIONS]);
+  choices.forEach(c => {
+    const b = document.createElement("button");
+    b.className="option";
+    b.textContent=c;
+    b.onclick=()=>answer(c===q.ans,b);
+    options.appendChild(b);
+  });
+}
+
+function answer(isCorrect,btn){
+  document.querySelectorAll(".option").forEach(b=>{
+    b.disabled=true;
+    if(b===btn){
+      b.classList.add(isCorrect?"correct":"wrong");
+    } else b.classList.add("faded");
+  });
+  if(isCorrect) score++;
+  setTimeout(()=> {
+    i++;
+    i<order.length?showQ():finish();
+  },1200);
+}
+
+function finish(){
+  game.classList.add("hidden");
+  end.classList.remove("hidden");
+  scoreText.textContent=`הציון שלך: ${score} מתוך ${order.length}`;
+}
+</script>
+
+</body>
+</html>
