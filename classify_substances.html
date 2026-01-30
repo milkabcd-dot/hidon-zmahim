@@ -243,6 +243,25 @@
     color: white !important;
     border-color: #10b981 !important;
     animation: correctPulse 0.5s ease;
+    position: relative;
+  }
+
+  .correct::after {
+    content: '✓';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+    animation: popIn 0.3s ease;
+  }
+
+  @keyframes popIn {
+    0% { transform: translateY(-50%) scale(0); }
+    50% { transform: translateY(-50%) scale(1.2); }
+    100% { transform: translateY(-50%) scale(1); }
   }
 
   @keyframes correctPulse {
@@ -255,6 +274,19 @@
     color: white !important;
     border-color: #ef4444 !important;
     animation: shake 0.5s ease;
+    position: relative;
+  }
+
+  .wrong::after {
+    content: '✗';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+    animation: popIn 0.3s ease;
   }
 
   @keyframes shake {
@@ -429,7 +461,8 @@
     <h1>🧪 חידון — השפה הכימית</h1>
     <p>15 שאלות • בחרו את הסיווג הנכון</p>
     <p>עריכה: מילכה ברקו גרש</p>
-    <button class="main-btn">התחלה 🚀</button>
+    <p id="readyText" class="hidden" style="font-size: 1.2em; color: #f97316; font-weight: bold; margin-top: 15px;">מתחילים בעוד <span id="countdown">3</span>...</p>
+    <button class="main-btn" id="startBtn">התחלה 🚀</button>
 </div>
 
 <div class="card hidden" id="game">
@@ -486,13 +519,31 @@ window.onload = function() {
   function shuffle(a){return a.sort(()=>Math.random()-0.5)}
 
   function startGame(){
-    order = shuffle([...QUESTIONS]);
-    i = 0;
-    score = 0;
-    start.classList.add("hidden");
-    end.classList.add("hidden");
-    game.classList.remove("hidden");
-    showQ();
+    const startBtn = document.getElementById('startBtn');
+    const readyText = document.getElementById('readyText');
+    const countdownSpan = document.getElementById('countdown');
+    
+    // Hide button and show countdown
+    startBtn.classList.add('hidden');
+    readyText.classList.remove('hidden');
+    
+    let count = 3;
+    const countdownInterval = setInterval(() => {
+      count--;
+      if (count > 0) {
+        countdownSpan.textContent = count;
+      } else {
+        clearInterval(countdownInterval);
+        // Start the actual game
+        order = shuffle([...QUESTIONS]);
+        i = 0;
+        score = 0;
+        start.classList.add("hidden");
+        end.classList.add("hidden");
+        game.classList.remove("hidden");
+        showQ();
+      }
+    }, 1000);
   }
 
   function showQ(){
@@ -545,8 +596,21 @@ window.onload = function() {
     createConfetti();
   }
 
-  document.querySelector("#start .main-btn").onclick = startGame;
-  document.querySelector("#end .main-btn").onclick = startGame;
+  document.getElementById('startBtn').onclick = startGame;
+  document.querySelector("#end .main-btn").onclick = () => {
+    // Reset countdown text
+    const readyText = document.getElementById('readyText');
+    const startBtn = document.getElementById('startBtn');
+    const countdownSpan = document.getElementById('countdown');
+    
+    readyText.classList.add('hidden');
+    startBtn.classList.remove('hidden');
+    countdownSpan.textContent = '3';
+    
+    // Show start screen
+    end.classList.add("hidden");
+    start.classList.remove("hidden");
+  };
 };
 </script>
 
