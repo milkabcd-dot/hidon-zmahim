@@ -35,9 +35,11 @@
     background-attachment: fixed;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
     padding: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     position: fixed;
     top: 0;
     left: 0;
@@ -88,6 +90,7 @@
     direction: rtl;
     z-index: 1;
     margin: auto;
+    max-height: none;
   }
 
   @keyframes slideIn {
@@ -395,6 +398,8 @@
   @media (max-width: 600px) {
     body {
       padding: 10px;
+      padding-top: 15px;
+      padding-bottom: 15px;
     }
     
     .card {
@@ -420,13 +425,15 @@
     }
     
     img {
-      max-height: 180px;
-      height: 180px;
+      max-height: 150px;
+      height: 150px;
+      margin: 10px auto;
     }
     
     button.option {
       font-size: 0.9em;
       padding: 14px 12px;
+      min-height: 52px;
     }
     
     .main-btn {
@@ -454,8 +461,14 @@
     }
     
     img {
-      max-height: 160px;
-      height: 160px;
+      max-height: 130px;
+      height: 130px;
+      margin: 8px auto;
+    }
+    
+    button.option {
+      min-height: 50px;
+      padding: 12px 10px;
     }
   }
 </style>
