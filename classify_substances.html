@@ -13,6 +13,13 @@
 
   html {
     direction: rtl;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   body {
@@ -25,14 +32,18 @@
     padding: 15px;
     position: relative;
     overflow-x: hidden;
+    margin: 0;
+    width: 100%;
   }
 
   /* אנימציה של חלקיקים ברקע */
   body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     width: 200%;
     height: 200%;
+    top: 0;
+    left: 0;
     background-image: 
       radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px),
       radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
@@ -40,6 +51,7 @@
     background-position: 0 0, 40px 40px;
     animation: float 20s linear infinite;
     pointer-events: none;
+    z-index: 0;
   }
 
   @keyframes float {
@@ -60,6 +72,8 @@
     animation: slideIn 0.5s ease-out;
     border: 2px solid rgba(255,255,255,0.3);
     direction: rtl;
+    z-index: 1;
+    margin: auto;
   }
 
   @keyframes slideIn {
